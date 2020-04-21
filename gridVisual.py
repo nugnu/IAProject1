@@ -41,7 +41,10 @@ def display_grid(problem):
     green_circle = lines.Line2D([], [], color="green", marker='o', markersize=10, markerfacecolor="green")
     plt.legend((white_circle, grey_circle, black_circle, purple_circle, red_circle, yellow_circle, green_circle),
                ('Traversable Area', 'Item', 'Wall', 'Ghost', 'Initial Position', 'Pacman Current Position', "Goal"),
-               numpoints=1, prop={'size': 7}, loc=(-.1, -.1))                                          
+               numpoints=1, prop={'size': 7}, loc=(-.1, -.1))       
+    plt.savefig("test.png")
     plt.show()
+    plt.close()
+                                
 
 
