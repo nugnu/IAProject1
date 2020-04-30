@@ -16,7 +16,7 @@ def grid_breadth_first_tree_search(problem): # BFS
     iterations = 0
     all_node_colors = []
     node_colors = assign_node_initial_colors(G.nodes(), problem.grid, problem)
-    all_node_colors.append(node_colors)
+    all_node_colors.append(list(node_colors))
 
     # Adding first node to the queue
     frontier = deque([Node(problem.initial)])
@@ -57,7 +57,7 @@ def grid_depth_first_tree_search(problem): # DFS
     iterations = 0
     all_node_colors = []
     node_colors = assign_node_initial_colors(G.nodes(), problem.grid, problem)
-    all_node_colors.append(node_colors)
+    all_node_colors.append(list(node_colors))
 
     # Adding first node to the stack
     frontier = [Node(problem.initial)] # STACK
