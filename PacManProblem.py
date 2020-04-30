@@ -1,11 +1,3 @@
-import os
-import sys 
-cwd = os.getcwd()
-AIMA_PATH = os.path.join(cwd, "../aima-python/")
-if AIMA_PATH not in sys.path:
-  sys.path.insert(0, AIMA_PATH)
-
-print(sys.path)
 from collections import deque
 from collections import Counter
 from search import Problem
@@ -14,16 +6,17 @@ from utils import *
 # Pre-defined actions for PacManProblem
 directions4 = {'W': (0, -1), 'N': (1, 0), 'E': (0, 1), 'S': (-1, 0)}
 # Pre-defined grid spots of the PacManProblem
-spots = { # spots < 5 are traversable
+spots = { 
     "initial": 0, # pacman initial position -> traversable
     "pacman": 1, # pacman current spot -> traversable
-    "goal": 2,
-    "white": 3, # traversable spot
-    "grey": 4, # traversable and a collectable item
-    "black": 5, # not traversable (wall)
-    "ghost": 6 # ghost -> not traversable
+    "exploring": 2, # search methods current exploring spot -> traversable
+    "goal": 3, # goal -> traversable
+    "white": 4, # traversable spot
+    "grey": 5, # traversable and a collectable item
+    "black": 6, # not traversable (wall)
+    "ghost": 7 # ghost -> not traversable
 }
-notTraversable = 5 # spots >= 5 arent traversable
+notTraversable = 6 # spots >= notTraversable arent traversable
 
 class PacManProblem(Problem):
     """Problem of finding an optimal route in a pacman grid, assuming you have to get all of the collectable items"""
@@ -39,8 +32,7 @@ class PacManProblem(Problem):
 
     def __init__(self, initial, goal, grid, defined_actions=directions4, defined_spots=spots):
         """The grid is a 2 dimensional array/list whose state is specified by tuple of indices"""
-        super().__init__(initial)
-        self.goal = goal
+        super().__init__(initial, goal)
         self.grid = grid
         self.defined_actions = defined_actions
         self.defined_spots = defined_spots
@@ -84,5 +76,9 @@ class PacManProblem(Problem):
         state to self.goal or checks for state in self.goal if it is a
         list, as specified in the constructor. Override this method if
         checking against a single self.goal is not enough."""
+
+        """ depois a gente ve isso
         if (super().goal_test(state) and self.numberOfItemsInGrid == 0): return 1
         return 0
+        """
+        return super().goal_test(state)

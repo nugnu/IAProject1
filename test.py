@@ -1,10 +1,11 @@
+from searchMethods import *
 from PacManProblem import *
 from gridVisual import *
 import numpy as np
 
 N = 5 # y size
 M = 8 # x size
-grid =  np.random.randint(3,6, size=(N,M)) # randomize white, grey and black spots
+grid =  np.random.randint(4,7, size=(N,M)) # randomize white, grey and black spots
 grid = grid.tolist()
 initial = (0,0)
 goal = (N-1, M-1)
@@ -20,9 +21,9 @@ print(problem.actions((2,2)))
 print(problem.grid[3][2], problem.grid[2][3], problem.grid[1][2], problem.grid[2][1]) # (2,2) + N, E, S, W
 print(problem.actions((0,24)))
 print(problem.numberOfItemsInGrid)
-print(problem.result((1,1), "W"))
-print(problem.result((1,0), "N"))
+print(problem.result((0,0), "N"))
+print(problem.result((1,0), "E"))
 print(problem.numberOfItemsInGrid)
 print(problem.goal_test((N-1, M-1)))
-display_grid(problem)
+show_grid(problem) # display grid on BFS algorithm
 
