@@ -59,11 +59,11 @@ def grid_depth_first_tree_search(problem): # DFS
     node_colors = assign_node_initial_colors(G.nodes(), problem.grid, problem)
     all_node_colors.append(dict(node_colors))
 
-    # Adding first node to the queue
+    # Adding first node to the stack
     frontier = [Node(problem.initial)] # STACK
     
     while frontier:
-        # Popping first node of queue
+        # Popping first node of stack
         node = frontier.pop()
 
         node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
