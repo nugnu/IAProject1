@@ -40,7 +40,7 @@ def grid_breadth_first_tree_search(problem): # BFS
                 node_colors[pacman_pos[0]*M + pacman_pos[1]] = assign_color_by_grid_spot(pacman_pos[0], pacman_pos[1], problem.grid, problem)  # current position being explored
                 node_colors[pacman_old[0]*M + pacman_old[1]] = assign_color_by_grid_spot(pacman_old[0], pacman_old[1], problem.grid, problem) 
                 iterations += 1
-                all_node_colors.append(node_colors)
+                all_node_colors.append(list(node_colors))
             return (iterations, all_node_colors, node)
         
         frontier.extend(node.expand(problem))
@@ -81,7 +81,7 @@ def grid_depth_first_tree_search(problem): # DFS
                 node_colors[pacman_pos[0]*M + pacman_pos[1]] = assign_color_by_grid_spot(pacman_pos[0], pacman_pos[1], problem.grid, problem)  # current position being explored
                 node_colors[pacman_old[0]*M + pacman_old[1]] = assign_color_by_grid_spot(pacman_old[0], pacman_old[1], problem.grid, problem) 
                 iterations += 1
-                all_node_colors.append(node_colors)
+                all_node_colors.append(list(node_colors))
             return (iterations, all_node_colors, node)
         
         frontier.extend(node.expand(problem))
