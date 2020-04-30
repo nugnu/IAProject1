@@ -68,7 +68,7 @@ def grid_depth_first_tree_search(problem): # DFS
 
         node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
         iterations += 1
-        all_node_colors.append(node_colors)
+        all_node_colors.append(list(node_colors))
         node_colors[node.state[0]*M + node.state[1]] = assign_color_by_grid_spot(node.state[0], node.state[1], problem.grid, problem) # get back to the original color on the next iteration
 
         if problem.goal_test(node.state):
