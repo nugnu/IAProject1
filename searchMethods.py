@@ -16,7 +16,7 @@ def grid_breadth_first_tree_search(problem): # BFS
     iterations = 0
     all_node_colors = []
     node_colors = assign_node_initial_colors(G.nodes(), problem.grid, problem)
-    all_node_colors.append(dict(node_colors))
+    all_node_colors.append(node_colors)
 
     # Adding first node to the queue
     frontier = deque([Node(problem.initial)])
@@ -27,7 +27,7 @@ def grid_breadth_first_tree_search(problem): # BFS
 
         node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
         iterations += 1
-        all_node_colors.append(dict(node_colors))
+        all_node_colors.append(node_colors)
         node_colors[node.state[0]*M + node.state[1]] = assign_color_by_grid_spot(node.state[0], node.state[1], problem.grid, problem) # get back to the original color on the next iteration
 
         if problem.goal_test(node.state):
@@ -40,7 +40,7 @@ def grid_breadth_first_tree_search(problem): # BFS
                 node_colors[pacman_pos.state[0]*M + pacman_pos.state[1]] = assign_color_by_grid_spot(pacman_pos.state[0], pacman_pos.state[1], problem.grid, problem)  # current position being explored
                 node_colors[pacman_old.state[0]*M + pacman_old.state[1]] = assign_color_by_grid_spot(pacman_old.state[0], pacman_old.state[1], problem.grid, problem) 
                 iterations += 1
-                all_node_colors.append(dict(node_colors))
+                all_node_colors.append(node_colors)
             return (iterations, all_node_colors, node)
         
         frontier.extend(node.expand(problem))
@@ -57,7 +57,7 @@ def grid_depth_first_tree_search(problem): # DFS
     iterations = 0
     all_node_colors = []
     node_colors = assign_node_initial_colors(G.nodes(), problem.grid, problem)
-    all_node_colors.append(dict(node_colors))
+    all_node_colors.append(node_colors)
 
     # Adding first node to the stack
     frontier = [Node(problem.initial)] # STACK
@@ -68,7 +68,7 @@ def grid_depth_first_tree_search(problem): # DFS
 
         node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
         iterations += 1
-        all_node_colors.append(dict(node_colors))
+        all_node_colors.append(node_colors)
         node_colors[node.state[0]*M + node.state[1]] = assign_color_by_grid_spot(node.state[0], node.state[1], problem.grid, problem) # get back to the original color on the next iteration
 
         if problem.goal_test(node.state):
@@ -81,7 +81,7 @@ def grid_depth_first_tree_search(problem): # DFS
                 node_colors[pacman_pos.state[0]*M + pacman_pos.state[1]] = assign_color_by_grid_spot(pacman_pos.state[0], pacman_pos.state[1], problem.grid, problem)  # current position being explored
                 node_colors[pacman_old.state[0]*M + pacman_old.state[1]] = assign_color_by_grid_spot(pacman_old.state[0], pacman_old.state[1], problem.grid, problem) 
                 iterations += 1
-                all_node_colors.append(dict(node_colors))
+                all_node_colors.append(node_colors)
             return (iterations, all_node_colors, node)
         
         frontier.extend(node.expand(problem))
