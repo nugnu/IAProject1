@@ -37,8 +37,8 @@ def grid_breadth_first_tree_search(problem): # BFS
             for action in goal_node.solution(): # set of actions to go from root to goal
                 pacman_old = pacman_pos
                 pacman_pos = problem.result(pacman_pos, action) # grid automatically changed after problem.result and the action taken
-                node_colors[pacman_pos.state[0]*M + pacman_pos.state[1]] = assign_color_by_grid_spot(pacman_pos.state[0], pacman_pos.state[1], problem.grid, problem)  # current position being explored
-                node_colors[pacman_old.state[0]*M + pacman_old.state[1]] = assign_color_by_grid_spot(pacman_old.state[0], pacman_old.state[1], problem.grid, problem) 
+                node_colors[pacman_pos[0]*M + pacman_pos[1]] = assign_color_by_grid_spot(pacman_pos[0], pacman_pos[1], problem.grid, problem)  # current position being explored
+                node_colors[pacman_old[0]*M + pacman_old[1]] = assign_color_by_grid_spot(pacman_old[0], pacman_old[1], problem.grid, problem) 
                 iterations += 1
                 all_node_colors.append(node_colors)
             return (iterations, all_node_colors, node)
@@ -78,8 +78,8 @@ def grid_depth_first_tree_search(problem): # DFS
             for action in goal_node.solution(): # set of actions to go from root to goal
                 pacman_old = pacman_pos
                 pacman_pos = problem.result(pacman_pos, action) # grid automatically changed after problem.result and the action taken
-                node_colors[pacman_pos.state[0]*M + pacman_pos.state[1]] = assign_color_by_grid_spot(pacman_pos.state[0], pacman_pos.state[1], problem.grid, problem)  # current position being explored
-                node_colors[pacman_old.state[0]*M + pacman_old.state[1]] = assign_color_by_grid_spot(pacman_old.state[0], pacman_old.state[1], problem.grid, problem) 
+                node_colors[pacman_pos[0]*M + pacman_pos[1]] = assign_color_by_grid_spot(pacman_pos[0], pacman_pos[1], problem.grid, problem)  # current position being explored
+                node_colors[pacman_old[0]*M + pacman_old[1]] = assign_color_by_grid_spot(pacman_old[0], pacman_old[1], problem.grid, problem) 
                 iterations += 1
                 all_node_colors.append(node_colors)
             return (iterations, all_node_colors, node)

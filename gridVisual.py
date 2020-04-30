@@ -4,6 +4,7 @@ import matplotlib.lines as lines
 import ipywidgets as widgets
 from IPython.display import display
 from collections import deque
+import numpy as np
 
 def assign_color_by_grid_spot(y, x, grid, problem):
     val = grid[y][x]
@@ -62,11 +63,12 @@ def show_grid(problem, node_colors = None):
     plt.close()
 
 def display_grid_algorithm(algorithm=None, problem=None):
-    all_node_colors = None # inicializando aqui para ter o escopo em todas as funcoes abaixo
-
+    
     def slider_callback(iteration):
         # don't show graph for the first time running the cell calling this function
         try:
+            printVar = np.array(all_node_colors[iteration]).reshape(len(problem.grid),len(problem.grid[0]))
+            print(printVar)
             show_grid(problem, node_colors=all_node_colors[iteration])
         except:
             pass
@@ -75,12 +77,11 @@ def display_grid_algorithm(algorithm=None, problem=None):
         if Visualize is True:
             button.value = False
 
+            global all_node_colors
+
             iterations, all_node_colors, node = algorithm(problem)
             slider.max = len(all_node_colors) - 1
 
-            for i in range(slider.max + 1):
-                slider.value = i
-                # time.sleep(.5)
 
     slider = widgets.IntSlider(min=0, max=1, step=1, value=0)
     slider_visual = widgets.interactive(slider_callback, iteration=slider)
