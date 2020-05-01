@@ -33,6 +33,7 @@ class PacManProblem(Problem):
     def __init__(self, initial, goal, grid, defined_actions=directions4, defined_spots=spots):
         """The grid is a 2 dimensional array/list whose state is specified by tuple of indices"""
         super().__init__(initial, goal)
+        self.pacman_active = False # only active after signal activePacman()
         self.grid = grid
         self.defined_actions = defined_actions
         self.defined_spots = defined_spots
@@ -50,18 +51,27 @@ class PacManProblem(Problem):
         for action in self.defined_actions:
             next_state = vector_add(state, self.defined_actions[action])
             if 0 <= next_state[0] <= self.n - 1 and 0 <= next_state[1] <= self.m - 1: 
-                if self.grid[next_state[0]][next_state[1]] < notTraversable: #traversable
+                if self.grid[next_state[0]][next_state[1]] < notTraversable: # traversable
                     allowed_actions.append(action)
         return allowed_actions
 
+    def activate_pacman(self): # signal the class object that the search method got finished and now pacman is traversing
+        self.pacman_active = True
+
+    def deactivate_pacman(self): # signal the class object that the search method got finished and now pacman is traversing
+        self.pacman_active = False
+
     def result(self, state, action):
         """Moves in the direction specified by action and remove an item from the grid"""
-        if (self.grid[state[0]][state[1]] != self.defined_spots["initial"]): # we need to change the current state "pacman" to "white" as long its not the initial state as we want to preserve it
-            self.grid[state[0]][state[1]] = self.defined_spots["white"]
         next_state = vector_add(state, self.defined_actions[action])
-        if (self.grid[next_state[0]][next_state[1]] == self.defined_spots["grey"]): # collect item 
-            self.numberOfItemsInGrid = self.numberOfItemsInGrid - 1
-        self.grid[next_state[0]][next_state[1]] = self.defined_spots["pacman"] 
+
+        if (self.pacman_active == True): # we only want to change the grid when the actual pacman walks through it. when we are exploring through a search method, nothings gonna happen
+            if (self.grid[state[0]][state[1]] != self.defined_spots["initial"]): # we want to still mark the initial spot on grid to better visualization 
+                self.grid[state[0]][state[1]] = self.defined_spots["white"]
+            if (self.grid[next_state[0]][next_state[1]] == self.defined_spots["grey"]): # collect item 
+                self.numberOfItemsInGrid = self.numberOfItemsInGrid - 1
+            self.grid[next_state[0]][next_state[1]] = self.defined_spots["pacman"] 
+        
         return next_state
 
     def value(self, state):

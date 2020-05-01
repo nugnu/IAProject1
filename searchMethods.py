@@ -34,6 +34,7 @@ def grid_breadth_first_tree_search(problem): # BFS
             goal_node = node
             pacman_pos = problem.initial # pacman position after taking action
             pacman_old = problem.initial # pacman position before taking action
+            problem.activate_pacman() # signal the object problem that pacman is now traversing 
             for action in goal_node.solution(): # set of actions to go from root to goal
                 pacman_old = pacman_pos
                 pacman_pos = problem.result(pacman_pos, action) # grid automatically changed after problem.result and the action taken
@@ -41,9 +42,18 @@ def grid_breadth_first_tree_search(problem): # BFS
                 node_colors[pacman_old[0]*M + pacman_old[1]] = assign_color_by_grid_spot(pacman_old[0], pacman_old[1], problem.grid, problem) 
                 iterations += 1
                 all_node_colors.append(list(node_colors))
+            problem.deactivate_pacman()
             return (iterations, all_node_colors, node)
+    
+        expandedNodes = node.expand(problem)
         
-        frontier.extend(node.expand(problem))
+        if (iterations == 1): # we dont need to worry about the initial node parents
+            frontier.extend(expandedNodes)
+        else:
+            for expandedNode in expandedNodes:
+                if (expandedNode != node.parent): # avoid getting back to its own parent
+                    frontier.append(expandedNode)
+                
         
     return None
 
@@ -59,11 +69,11 @@ def grid_depth_first_tree_search(problem): # DFS
     node_colors = assign_node_initial_colors(G.nodes(), problem.grid, problem)
     all_node_colors.append(list(node_colors))
 
-    # Adding first node to the stack
-    frontier = [Node(problem.initial)] # STACK
+    # Adding first node to the queue
+    frontier = [Node(problem.initial)]
     
     while frontier:
-        # Popping first node of stack
+        # Popping first node of queue
         node = frontier.pop()
 
         node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
@@ -75,6 +85,7 @@ def grid_depth_first_tree_search(problem): # DFS
             goal_node = node
             pacman_pos = problem.initial # pacman position after taking action
             pacman_old = problem.initial # pacman position before taking action
+            problem.activate_pacman() # signal the object problem that pacman is now traversing 
             for action in goal_node.solution(): # set of actions to go from root to goal
                 pacman_old = pacman_pos
                 pacman_pos = problem.result(pacman_pos, action) # grid automatically changed after problem.result and the action taken
@@ -82,9 +93,17 @@ def grid_depth_first_tree_search(problem): # DFS
                 node_colors[pacman_old[0]*M + pacman_old[1]] = assign_color_by_grid_spot(pacman_old[0], pacman_old[1], problem.grid, problem) 
                 iterations += 1
                 all_node_colors.append(list(node_colors))
+            problem.deactivate_pacman()
             return (iterations, all_node_colors, node)
+    
+        expandedNodes = node.expand(problem)
         
-        frontier.extend(node.expand(problem))
+        if (iterations == 1): # we dont need to worry about the initial node parents
+            frontier.extend(expandedNodes)
+        else:
+            for expandedNode in expandedNodes:
+                if (expandedNode != node.parent): # avoid getting back to its own parent
+                    frontier.append(expandedNode)
+                
         
     return None
-
