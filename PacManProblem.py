@@ -19,7 +19,7 @@ spots = {
 notTraversable = 6 # spots >= notTraversable arent traversable
 
 class PacManProblem(Problem):
-    """Problem of finding an optimal route in a pacman grid, assuming you have to get all of the collectable items"""
+    """Problem of finding an optimal route in a pacman grid, assuming you dont have to get all of the collectable items"""
     """Each grid element can be either by default:
     white = 0 which means its a traversable spot
     grey = 1 which means its a traversable spot and a collectable item 
@@ -92,3 +92,9 @@ class PacManProblem(Problem):
         return 0
         """
         return super().goal_test(state)
+
+    # implementation of h funcion for A* heuristic  
+    def h(self, state):
+        return int(distance_squared(state, self.goal))
+       
+
