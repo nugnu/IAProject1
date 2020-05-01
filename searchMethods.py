@@ -5,6 +5,7 @@ from collections import deque
 from gridVisual import assign_node_initial_colors
 from gridVisual import assign_color_by_grid_spot
 
+# UNINFORMED SEARCH
 
 def grid_breadth_first_tree_search(problem): # BFS
     # useful variables 
@@ -20,7 +21,9 @@ def grid_breadth_first_tree_search(problem): # BFS
 
     # Adding first node to the queue
     frontier = deque([Node(problem.initial)])
-    
+    # set of explored nodes, to avoid visiting the same nodes over and over  
+    explored = set()
+
     while frontier:
         # Popping first node of queue
         node = frontier.popleft()
@@ -45,15 +48,11 @@ def grid_breadth_first_tree_search(problem): # BFS
             problem.deactivate_pacman()
             return (iterations, all_node_colors, node)
     
-        expandedNodes = node.expand(problem)
-        
-        if (iterations == 1): # we dont need to worry about the initial node parents
-            frontier.extend(expandedNodes)
-        else:
-            for expandedNode in expandedNodes:
-                if (expandedNode != node.parent): # avoid getting back to its own parent
-                    frontier.append(expandedNode)
-                
+        explored.add(node)
+        frontier.extend(expandedNode for expandedNode in node.expand(problem)
+                        if expandedNode not in explored 
+                        and expandedNode not in frontier
+        )
         
     return None
 
@@ -71,6 +70,8 @@ def grid_depth_first_tree_search(problem): # DFS
 
     # Adding first node to the queue
     frontier = [Node(problem.initial)]
+    # set of explored nodes, to avoid visiting the same nodes over and over  
+    explored = set()
     
     while frontier:
         # Popping first node of queue
@@ -96,14 +97,13 @@ def grid_depth_first_tree_search(problem): # DFS
             problem.deactivate_pacman()
             return (iterations, all_node_colors, node)
     
-        expandedNodes = node.expand(problem)
-        
-        if (iterations == 1): # we dont need to worry about the initial node parents
-            frontier.extend(expandedNodes)
-        else:
-            for expandedNode in expandedNodes:
-                if (expandedNode != node.parent): # avoid getting back to its own parent
-                    frontier.append(expandedNode)
+        explored.add(node)
+        frontier.extend(expandedNode for expandedNode in node.expand(problem)
+                        if expandedNode not in explored 
+                        and expandedNode not in frontier
+        )
                 
         
     return None
+
+# INFORMED SEARCH 
