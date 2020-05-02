@@ -11,7 +11,7 @@ from utils import *
 # can be used by uniform search (uninformed)
 # can be used by greed_path, greed_item search and A* (informed heuristics)
 
-def grid_best_first_search(problem, f): # Informed search method that uses f function as a heuristic to solve the problem. 
+def grid_best_first_search(problem, f, order='min'): # Informed search method that uses f function as a heuristic to solve the problem, min_heap by default. 
     # useful variables 
     N = len(problem.grid) # y
     M = len(problem.grid[0]) # x
@@ -27,7 +27,7 @@ def grid_best_first_search(problem, f): # Informed search method that uses f fun
     f = memoize(f, 'f')
 
     # Adding first node to the Priority Queue
-    frontier = PriorityQueue(order='min', f=f)
+    frontier = PriorityQueue(order=order, f=f)
     frontier.append(Node(problem.initial))
 
     # set of explored nodes, to avoid visiting the same nodes over and over  
@@ -181,7 +181,7 @@ def grid_uniform_cost_search(problem):
 # take priority to a node with more itens from root to node until it reaches goal
 def grid_greedy_itens_search(problem):
     item_heuristic = memoize(item_heuristic or problem.itens_from_root_to_node, 'item_heuristic')
-    iterations, all_node_colors = node = grid_best_first_search(problem, lambda n: item_heuristic(n))
+    iterations, all_node_colors = node = grid_best_first_search(problem, lambda n: item_heuristic(n), order = 'max')
     return(iterations, all_node_colors, node)
 
 # uses heuristic to calculate which node is closest to goal and take this node as priority
