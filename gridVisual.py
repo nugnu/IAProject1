@@ -66,8 +66,6 @@ def display_grid_algorithm(algorithm=None, problem=None):
     def slider_callback(iteration):
         # don't show graph for the first time running the cell calling this function
         try:
-            printVar = np.array(all_node_colors[iteration]).reshape(len(problem.grid),len(problem.grid[0]))
-            print(printVar)
             show_grid(problem, node_colors=all_node_colors[iteration])
         except:
             pass
