@@ -93,8 +93,14 @@ class PacManProblem(Problem):
         """
         return super().goal_test(state)
 
-    # implementation of h funcion for A* heuristic  
+    # implementation of h funcion for A* and greedy_path heuristic  
     def h(self, state):
-        return int(distance_squared(state, self.goal))
-       
-
+        return int(distance(state, self.goal))
+    
+    # implementation of greedy_item heuristic function -> tries to get more items
+    def itens_from_root_to_node(self, node):
+        counter = 0
+        for n in node.path(): # for each node n in the path from root to node
+            if self.grid[n.state[0]][n.state[1]] == self.defined_spots["grey"] : # item
+                counter = counter + 1
+        return counter
