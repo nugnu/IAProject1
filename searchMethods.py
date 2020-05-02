@@ -180,19 +180,19 @@ def grid_uniform_cost_search(problem):
 
 # take priority to a node with more itens from root to node until it reaches goal
 def grid_greedy_itens_search(problem):
-    item_heuristic = memoize(item_heuristic or problem.itens_from_root_to_node, 'item_heuristic')
+    item_heuristic = memoize(problem.itens_from_root_to_node, 'item_heuristic')
     iterations, all_node_colors = node = grid_best_first_search(problem, f = lambda n: item_heuristic(n), order = 'max')
     return(iterations, all_node_colors, node)
 
 # uses heuristic to calculate which node is closest to goal and take this node as priority
 def grid_greedy_path_search(problem):
-    h = memoize(h or problem.h, 'h')
+    h = memoize(problem.h, 'h')
     iterations, all_node_colors = node = grid_best_first_search(problem, f = lambda n: h(n.state))
     return(iterations, all_node_colors, node)
 
 # A* (considers both path from root to node and the heuristic to calculate path from node to goal)
 def grid_astar_search(problem):
-    h = memoize(h or problem.h, 'h')
+    h = memoize(problem.h, 'h')
     iterations, all_node_colors = node = grid_best_first_search(problem, f = lambda n: n.path_cost + h(n.state))
     return(iterations, all_node_colors, node)
 
