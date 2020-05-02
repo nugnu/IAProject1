@@ -35,6 +35,7 @@ def grid_best_first_search(problem, f, order='min'): # Informed search method th
     
     while frontier:
         # Popping first node of Priority Queue
+
         node = frontier.pop()
 
         node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
@@ -63,9 +64,8 @@ def grid_best_first_search(problem, f, order='min'): # Informed search method th
             if expandedNode.state not in explored and expandedNode not in frontier:
                 frontier.append(expandedNode)
             elif expandedNode in frontier: # we have to check if the path to expandedNode got better by checking f function for both nodes 
-                frontier_node = frontier[expandedNode]
-                if f(expandedNode) < f(frontier_node):
-                    del frontier[frontier_node]
+                if f(expandedNode) < frontier[expandedNode]:
+                    del frontier[expandedNode]
                     frontier.append(expandedNode)
         
     return None
@@ -173,7 +173,7 @@ def grid_depth_first_search(problem): # DFS
 
 # uniform cost is best_first_search with f = path_cost
 def grid_uniform_cost_search(problem):
-    iterations, all_node_colors, node = grid_best_first_search(problem, lambda n: n.path_cost)
+    iterations, all_node_colors, node = grid_best_first_search(problem, f = lambda n: n.path_cost)
     return(iterations, all_node_colors, node)
 
 # INFORMED SEARCH 
@@ -181,19 +181,19 @@ def grid_uniform_cost_search(problem):
 # take priority to a node with more itens from root to node until it reaches goal
 def grid_greedy_itens_search(problem):
     item_heuristic = memoize(item_heuristic or problem.itens_from_root_to_node, 'item_heuristic')
-    iterations, all_node_colors = node = grid_best_first_search(problem, lambda n: item_heuristic(n), order = 'max')
+    iterations, all_node_colors = node = grid_best_first_search(problem, f = lambda n: item_heuristic(n), order = 'max')
     return(iterations, all_node_colors, node)
 
 # uses heuristic to calculate which node is closest to goal and take this node as priority
 def grid_greedy_path_search(problem):
     h = memoize(h or problem.h, 'h')
-    iterations, all_node_colors = node = grid_best_first_search(problem, lambda n: h(n.state))
+    iterations, all_node_colors = node = grid_best_first_search(problem, f = lambda n: h(n.state))
     return(iterations, all_node_colors, node)
 
 # A* (considers both path from root to node and the heuristic to calculate path from node to goal)
 def grid_astar_search(problem):
     h = memoize(h or problem.h, 'h')
-    iterations, all_node_colors = node = grid_best_first_search(problem, lambda n: n.path_cost + h(n.state))
+    iterations, all_node_colors = node = grid_best_first_search(problem, f = lambda n: n.path_cost + h(n.state))
     return(iterations, all_node_colors, node)
 
 
