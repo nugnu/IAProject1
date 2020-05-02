@@ -94,8 +94,8 @@ class PacManProblem(Problem):
         return super().goal_test(state)
 
     # implementation of h funcion for A* and greedy_path heuristic  
-    def h(self, state):
-        return int(distance(state, self.goal))
+    def h(self, node):
+        return int(distance(node.state, self.goal))
     
     # implementation of greedy_item heuristic function -> tries to get more items
     def itens_from_root_to_node(self, node):

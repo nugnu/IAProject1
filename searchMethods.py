@@ -187,13 +187,13 @@ def grid_greedy_itens_search(problem):
 # uses heuristic to calculate which node is closest to goal and take this node as priority
 def grid_greedy_path_search(problem):
     h = memoize(problem.h, 'h')
-    iterations, all_node_colors, node = grid_best_first_search(problem, f = lambda n: h(n.state))
+    iterations, all_node_colors, node = grid_best_first_search(problem, f = lambda n: h(n))
     return(iterations, all_node_colors, node)
 
 # A* (considers both path from root to node and the heuristic to calculate path from node to goal)
 def grid_astar_search(problem):
     h = memoize(problem.h, 'h')
-    iterations, all_node_colors, node = grid_best_first_search(problem, f = lambda n: n.path_cost + h(n.state))
+    iterations, all_node_colors, node = grid_best_first_search(problem, f = lambda n: n.path_cost + h(n))
     return(iterations, all_node_colors, node)
 
 
