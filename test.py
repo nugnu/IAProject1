@@ -2,28 +2,24 @@ from searchMethods import *
 from PacManProblem import *
 from gridVisual import *
 import numpy as np
+from mazegen import *
+import os
+from glob import glob 
 
-N = 5 # y size
-M = 8 # x size
-grid =  np.random.randint(4,7, size=(N,M)) # randomize white, grey and black spots
-grid = grid.tolist()
-initial = (0,0)
-goal = (N-1, M-1)
-problem = PacManProblem(initial, goal, grid)
-problem.grid[2][3] = problem.defined_spots["ghost"]
-problem.grid[1][2] = problem.defined_spots["ghost"]
-problem.grid[3][7] = problem.defined_spots["ghost"]
+initialValues = [(14,14), (14,14)] 
+goalValues= [(14,14), (14,14)]
+initialDict= dict(zip(range(len(initialValues)), initialValues)) # 0:initialValues[0], 1:initialValues[1] ...
+goalDict= dict(zip(range(len(goalValues)), initialValues)) # 0:goalValues[0], 1:goalValues[1] ...
 
-print(problem.defined_actions)
-print(problem.defined_spots)
-print(problem.actions((1,1)))
-print(problem.actions((2,2)))
-print(problem.grid[3][2], problem.grid[2][3], problem.grid[1][2], problem.grid[2][1]) # (2,2) + N, E, S, W
-print(problem.actions((0,24)))
-print(problem.numberOfItemsInGrid)
-print(problem.result((0,0), "N"))
-print(problem.result((1,0), "E"))
-print(problem.numberOfItemsInGrid)
-print(problem.goal_test((N-1, M-1)))
-show_grid(problem) # display grid on BFS algorithm
+cwd = os.getcwd()
+mazePath = os.path.join(cwd, "mazes/")
+defaultMazeExtension = ".in"
+mazes = glob(mazePath + "*" + defaultMazeExtension)
+problems = []
+
+iterator = 0
+for maze in mazes:
+    problems.append(PacManProblem(initialDict[iterator], goalDict[iterator], generate_maze(maze)))
+    iterator = iterator + 1
+
 

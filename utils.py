@@ -101,27 +101,27 @@ import numpy as np
 
 
 
-# #______________________________________________________________________________
-# #argmin and argmax
+#______________________________________________________________________________
+#argmin and argmax
 
-# identity = lambda x: x
-
-
-# def argmin_random_tie(seq, key=identity):
-#     """Return a minimum element of seq; break ties at random."""
-#     return min(shuffled(seq), key=key)
+identity = lambda x: x
 
 
-# def argmax_random_tie(seq, key=identity):
-#     """Return an element with highest fn(seq[i]) score; break ties at random."""
-#     return max(shuffled(seq), key=key)
+def argmin_random_tie(seq, key=identity):
+    """Return a minimum element of seq; break ties at random."""
+    return min(shuffled(seq), key=key)
 
 
-# def shuffled(iterable):
-#     """Randomly shuffle a copy of iterable."""
-#     items = list(iterable)
-#     random.shuffle(items)
-#     return items
+def argmax_random_tie(seq, key=identity):
+    """Return an element with highest fn(seq[i]) score; break ties at random."""
+    return max(shuffled(seq), key=key)
+
+
+def shuffled(iterable):
+    """Randomly shuffle a copy of iterable."""
+    items = list(iterable)
+    random.shuffle(items)
+    return items
 
 
 # # ______________________________________________________________________________

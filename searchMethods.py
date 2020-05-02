@@ -70,7 +70,8 @@ def grid_best_first_search(problem, f, order='min'): # Informed search method th
         
     return None
 
-# UNINFORMED SEARCH
+# UNINFORMED SEARCH METHODS
+
 
 def grid_breadth_first_search(problem): # BFS
     # useful variables 
@@ -176,7 +177,7 @@ def grid_uniform_cost_search(problem):
     iterations, all_node_colors, node = grid_best_first_search(problem, f = lambda n: n.path_cost)
     return(iterations, all_node_colors, node)
 
-# INFORMED SEARCH 
+# INFORMED SEARCH METHODS
 
 # take priority to a node with more itens from root to node until it reaches goal
 def grid_greedy_itens_search(problem):
@@ -195,5 +196,87 @@ def grid_astar_search(problem):
     h = memoize(problem.h, 'h')
     iterations, all_node_colors, node = grid_best_first_search(problem, f = lambda n: n.path_cost + h(n))
     return(iterations, all_node_colors, node)
+
+# LOCAL SEARCH METHODS
+
+
+def hill_climbing(problem):
+    """From the initial node, keep choosing the neighbor with highest value,
+    stopping when no neighbor is better. [Figure 4.2]"""
+    # useful variables 
+    N = len(problem.grid) # y
+    M = len(problem.grid[0]) # x
+    G = nx.grid_2d_graph(N,M)
+
+    # we use these two variables at the time of visualisations
+    iterations = 0
+    all_node_colors = []
+    node_colors = assign_node_initial_colors(G.nodes(), problem.grid, problem)
+    all_node_colors.append(list(node_colors))
+
+
+    # cache
+    h = memoize(problem.h, 'h')
+
+    node = Node(problem.initial)
+
+    # set of explored nodes, to avoid visiting the same nodes over and over  
+    explored = set()
+    node = frontier.pop()
+    if problem.goal_test(node.state):
+        #escrever  paradaquando resolve
+        node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
+        iterations += 1
+        all_node_colors.append(list(node_colors))
+        node_colors[node.state[0]*M + node.state[1]] = assign_color_by_grid_spot(node.state[0], node.state[1], problem.grid, problem) # get back to the original color on the next iteration
+        goal_node = node
+        pacman_pos = problem.initial # pacman position after taking action
+        pacman_old = problem.initial # pacman position before taking action
+        problem.activate_pacman() # signal the object problem that pacman is now traversing 
+        for action in goal_node.solution(): # set of actions to go from root to goal
+            pacman_old = pacman_pos
+            pacman_pos = problem.result(pacman_pos, action) # grid automatically changed after problem.result and the action taken
+            node_colors[pacman_pos[0]*M + pacman_pos[1]] = assign_color_by_grid_spot(pacman_pos[0], pacman_pos[1], problem.grid, problem)  # current position being explored
+            node_colors[pacman_old[0]*M + pacman_old[1]] = assign_color_by_grid_spot(pacman_old[0], pacman_old[1], problem.grid, problem) 
+            iterations += 1
+            all_node_colors.append(list(node_colors))
+        problem.deactivate_pacman()
+        return (iterations, all_node_colors, node)
+    while true:
+        node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
+        iterations += 1
+        all_node_colors.append(list(node_colors))
+        node_colors[node.state[0]*M + node.state[1]] = assign_color_by_grid_spot(node.state[0], node.state[1], problem.grid, problem) # get back to the original color on the next iteration
+        neighbors = current.expand(problem)
+        #No options
+        if not neighbors:
+            return (iterations, all_node_colors, node)
+        #Test if any option is the goal
+        for neighbor in neighbors:
+            if problem.goal_test(neighbor.state):
+                #pre
+                node_colors[neighbor.state[0]*M + neighbor.state[1]] = "orange" # current position being explored
+                iterations += 1
+                all_node_colors.append(list(node_colors))
+                node_colors[neighbor.state[0]*M + neighbor.state[1]] = assign_color_by_grid_spot(neighbor.state[0], neighbor.state[1], problem.grid, problem) # get back to the original color on the next iteration
+                #pos
+                goal_node = neighbor
+                pacman_pos = problem.initial # pacman position after taking action
+                pacman_old = problem.initial # pacman position before taking action
+                problem.activate_pacman() # signal the object problem that pacman is now traversing 
+                for action in goal_node.solution(): # set of actions to go from root to goal
+                    pacman_old = pacman_pos
+                    pacman_pos = problem.result(pacman_pos, action) # grid automatically changed after problem.result and the action taken
+                    node_colors[pacman_pos[0]*M + pacman_pos[1]] = assign_color_by_grid_spot(pacman_pos[0], pacman_pos[1], problem.grid, problem)  # current position being explored
+                    node_colors[pacman_old[0]*M + pacman_old[1]] = assign_color_by_grid_spot(pacman_old[0], pacman_old[1], problem.grid, problem) 
+                    iterations += 1
+                    all_node_colors.append(list(node_colors))
+                problem.deactivate_pacman()
+                return (iterations, all_node_colors, neighbor)
+        #pick highest valeu action
+        neighbor = argmax_random_tie(neighbors, f = lambda n: h(n.state))
+        if h(neighbor.state) <= h(node.state):
+            return (iterations, all_node_colors, neighbor)
+        node = neighbor
 
 
