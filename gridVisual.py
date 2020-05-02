@@ -44,7 +44,7 @@ def show_grid(problem, node_colors = None):
     pos = dict(zip(G.nodes(),G.nodes()))
     flipped_pos = {node: (y,x) for (node, (x,y)) in pos.items() }
     labels = dict(zip(pos, pos))                              
-    nx.draw_networkx(G, pos=flipped_pos, with_labels=True, node_size = 400*50/(N*M), node_color=node_colors)                                                                       
+    nx.draw_networkx(G, pos=flipped_pos, with_labels=False, node_size = 400*50/(N*M), node_color=node_colors)                                                                       
     plt.axis('off')                       
     white_circle = lines.Line2D([], [], color="black", marker='o', markersize=10, markerfacecolor="white")
     grey_circle = lines.Line2D([], [], color="grey", marker='o', markersize=10, markerfacecolor="grey")
