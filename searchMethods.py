@@ -200,7 +200,7 @@ def grid_astar_search(problem):
 # LOCAL SEARCH METHODS
 
 
-def hill_climbing(problem):
+def grid_hill_climbing_search(problem):
     """From the initial node, keep choosing the neighbor with highest value,
     stopping when no neighbor is better. [Figure 4.2]"""
     # useful variables 
@@ -220,9 +220,6 @@ def hill_climbing(problem):
 
     node = Node(problem.initial)
 
-    # set of explored nodes, to avoid visiting the same nodes over and over  
-    explored = set()
-    node = frontier.pop()
     if problem.goal_test(node.state):
         #escrever  paradaquando resolve
         node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
@@ -242,12 +239,12 @@ def hill_climbing(problem):
             all_node_colors.append(list(node_colors))
         problem.deactivate_pacman()
         return (iterations, all_node_colors, node)
-    while true:
+    while True:
         node_colors[node.state[0]*M + node.state[1]] = "orange" # current position being explored
         iterations += 1
         all_node_colors.append(list(node_colors))
         node_colors[node.state[0]*M + node.state[1]] = assign_color_by_grid_spot(node.state[0], node.state[1], problem.grid, problem) # get back to the original color on the next iteration
-        neighbors = current.expand(problem)
+        neighbors = node.expand(problem)
         #No options
         if not neighbors:
             return (iterations, all_node_colors, node)
@@ -260,23 +257,33 @@ def hill_climbing(problem):
                 all_node_colors.append(list(node_colors))
                 node_colors[neighbor.state[0]*M + neighbor.state[1]] = assign_color_by_grid_spot(neighbor.state[0], neighbor.state[1], problem.grid, problem) # get back to the original color on the next iteration
                 #pos
-                goal_node = neighbor
-                pacman_pos = problem.initial # pacman position after taking action
-                pacman_old = problem.initial # pacman position before taking action
-                problem.activate_pacman() # signal the object problem that pacman is now traversing 
-                for action in goal_node.solution(): # set of actions to go from root to goal
-                    pacman_old = pacman_pos
-                    pacman_pos = problem.result(pacman_pos, action) # grid automatically changed after problem.result and the action taken
-                    node_colors[pacman_pos[0]*M + pacman_pos[1]] = assign_color_by_grid_spot(pacman_pos[0], pacman_pos[1], problem.grid, problem)  # current position being explored
-                    node_colors[pacman_old[0]*M + pacman_old[1]] = assign_color_by_grid_spot(pacman_old[0], pacman_old[1], problem.grid, problem) 
-                    iterations += 1
-                    all_node_colors.append(list(node_colors))
+                problem.activate_pacman()
+                pacman_pos = problem.Teste(neighbor.state, node.state)
+                node_colors[neighbor.state[0]*M + neighbor.state[1]] = assign_color_by_grid_spot(neighbor.state[0], neighbor.state[1], problem.grid, problem)  # current position being explored
+                node_colors[node.state[0]*M + node.state[1]] = assign_color_by_grid_spot(node.state[0], node.state[1], problem.grid, problem)
+                iterations += 1
+                all_node_colors.append(list(node_colors))
                 problem.deactivate_pacman()
                 return (iterations, all_node_colors, neighbor)
         #pick highest valeu action
-        neighbor = argmax_random_tie(neighbors, f = lambda n: h(n.state))
-        if h(neighbor.state) <= h(node.state):
+        neighbor = argmin_random_tie(neighbors, key=lambda node: h(node))
+        if h(neighbor) >= h(node):
             return (iterations, all_node_colors, neighbor)
+        problem.activate_pacman()
+        problem.Teste(neighbor.state, node.state)
+        node_colors[neighbor.state[0]*M + neighbor.state[1]] = assign_color_by_grid_spot(neighbor.state[0], neighbor.state[1], problem.grid, problem)  # current position being explored
+        node_colors[node.state[0]*M + node.state[1]] = assign_color_by_grid_spot(node.state[0], node.state[1], problem.grid, problem)
+        iterations += 1
+        all_node_colors.append(list(node_colors))
+        problem.deactivate_pacman()
         node = neighbor
+    return (iterations, all_node_colors, neighbor)
 
-
+# used by hill climbing 
+def Teste(self, state, pre_state):
+     if (self.pacman_active == True): # we only want to change the grid when the actual pacman walks through it. when we are exploring through a search method, nothings gonna happen
+            if (self.grid[pre_state[0]][pre_state[1]] != self.defined_spots["initial"]): # we want to still mark the initial spot on grid to better visualization 
+                self.grid[pre_state[0]][pre_state[1]] = self.defined_spots["white"]
+            if (self.grid[state[0]][state[1]] == self.defined_spots["grey"]): # collect item 
+                self.numberOfItemsInGrid = self.numberOfItemsInGrid - 1
+            self.grid[state[0]][state[1]] = self.defined_spots["pacman"] 
