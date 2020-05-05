@@ -279,11 +279,3 @@ def grid_hill_climbing_search(problem):
         node = neighbor
     return (iterations, all_node_colors, neighbor)
 
-# used by hill climbing 
-def Teste(self, state, pre_state):
-     if (self.pacman_active == True): # we only want to change the grid when the actual pacman walks through it. when we are exploring through a search method, nothings gonna happen
-            if (self.grid[pre_state[0]][pre_state[1]] != self.defined_spots["initial"]): # we want to still mark the initial spot on grid to better visualization 
-                self.grid[pre_state[0]][pre_state[1]] = self.defined_spots["white"]
-            if (self.grid[state[0]][state[1]] == self.defined_spots["grey"]): # collect item 
-                self.numberOfItemsInGrid = self.numberOfItemsInGrid - 1
-            self.grid[state[0]][state[1]] = self.defined_spots["pacman"] 
