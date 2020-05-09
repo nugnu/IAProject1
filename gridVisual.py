@@ -55,9 +55,9 @@ def show_grid(problem, node_colors = None):
     green_circle = lines.Line2D([], [], color="green", marker='o', markersize=10, markerfacecolor="green")
     orange_circle = lines.Line2D([], [], color="orange", marker='o', markersize=10, markerfacecolor="orange")
 
-    plt.legend((white_circle, grey_circle, black_circle, purple_circle, red_circle, yellow_circle, green_circle, orange_circle),
-               ('Traversable Area', 'Item', 'Wall', 'Ghost', 'Initial Position', 'Pacman Current Position', "Goal", "Currently Exploring"),
-               numpoints=1, prop={'size': 7}, loc=(-.1, -.1))       
+    #plt.legend((white_circle, grey_circle, black_circle, purple_circle, red_circle, yellow_circle, green_circle, orange_circle),
+    #           ('Traversable Area', 'Item', 'Wall', 'Ghost', 'Initial Position', 'Pacman Current Position', "Goal", "Currently Exploring"),
+    #           numpoints=1, prop={'size': 7}, loc=(-.1, -.1))       
     plt.show()
     plt.close()
 
