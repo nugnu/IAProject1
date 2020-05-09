@@ -75,8 +75,11 @@ def display_grid_algorithm(algorithm=None, problem=None):
             button.value = False
 
             global all_node_colors
-
+            print("NUMERO DE ITENS FINAL NO GRID: " + str(problem.numberOfItemsInGrid))
             iterations, all_node_colors, node = algorithm(problem)
+            print("TAMANHO DO CAMINHO: " + str(len(node.path())))
+            print("NUMERO DE ITENS FINAL NO GRID: " + str(problem.numberOfItemsInGrid))
+            
             slider.max = len(all_node_colors) - 1
 
 
